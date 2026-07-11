@@ -65,7 +65,7 @@ export default function FAQPage() {
           <div className="flex space-x-6">
             <Link to="/terms" className="hover:text-brand-purple transition-colors font-medium">Terms of Service</Link>
             <Link to="/privacy" className="hover:text-brand-purple transition-colors font-medium">Privacy Policy</Link>
-            <Link to="/refund" className="hover:text-brand-purple transition-colors font-medium">Refund Policy</Link>
+            <Link to="/refund" className="hover:text-brand-purple transition-colors font-medium">Cancellation and Refunds</Link>
             <Link to="/faq" className="hover:text-brand-purple transition-colors font-medium font-semibold text-brand-purple">FAQ</Link>
           </div>
         </div>

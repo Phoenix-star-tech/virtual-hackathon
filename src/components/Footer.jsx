@@ -68,7 +68,7 @@ export default function Footer() {
           <div className="flex space-x-6">
             <Link to="/terms" className="text-[#555] hover:text-[#f0efec] transition-colors">Terms of Service</Link>
             <Link to="/privacy" className="text-[#555] hover:text-[#f0efec] transition-colors">Privacy Policy</Link>
-            <Link to="/refund" className="text-[#555] hover:text-[#f0efec] transition-colors">Refund Policy</Link>
+            <Link to="/refund" className="text-[#555] hover:text-[#f0efec] transition-colors">Cancellation and Refunds</Link>
             <Link to="/faq" className="text-[#555] hover:text-[#f0efec] transition-colors">FAQ</Link>
           </div>
         </div>

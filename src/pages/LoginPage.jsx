@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import Footer from "../components/Footer";
 import logo from "../assets/logo.png";
 
 export default function LoginPage() {
@@ -133,9 +134,7 @@ export default function LoginPage() {
         </div>
       </main>
 
-      <footer className="py-6 text-center text-xs text-slate-400 relative z-10 w-full border-t border-slate-100 bg-white/40">
-        &copy; 2026 VASHIK Platform. All rights reserved.
-      </footer>
+      <Footer />
     </div>
   );
 }
