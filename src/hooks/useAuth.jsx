@@ -1,75 +1,53 @@
-import { useState, useEffect, createContext, useContext } from "react";
-import { getSessionApi, loginApi, registerApi, logoutApi } from "../api/auth";
+import { useState, createContext, useContext } from "react";
 
 const AuthContext = createContext(null);
 
-export function AuthProvider({ children }) {
-  const [user, setUserState] = useState(() => {
+function loadUser() {
+  try {
     const saved = localStorage.getItem("auth_user");
     return saved ? JSON.parse(saved) : null;
-  });
-  const [loading, setLoading] = useState(true);
+  } catch {
+    return null;
+  }
+}
 
-  // Wrapper to sync state with localStorage
+function saveUser(data) {
+  if (data) {
+    localStorage.setItem("auth_user", JSON.stringify(data));
+  } else {
+    localStorage.removeItem("auth_user");
+    localStorage.removeItem("auth_token");
+  }
+}
+
+export function AuthProvider({ children }) {
+  const [user, setUserState] = useState(loadUser);
+
   const setUser = (data) => {
-    if (data) {
-      localStorage.setItem("auth_user", JSON.stringify(data));
-      setUserState(data);
-    } else {
-      localStorage.removeItem("auth_user");
-      setUserState(null);
-    }
+    saveUser(data);
+    setUserState(data);
   };
 
-  useEffect(() => {
-    checkSession();
-  }, []);
-
-  async function checkSession() {
-    try {
-      // If we already have a user in localStorage, we can trust it for now
-      // since the backend doesn't use HTTP cookies for auth state effectively
-      if (localStorage.getItem("auth_user")) {
-        setLoading(false);
-        return;
-      }
-      const data = await getSessionApi();
-      if (data.authenticated) {
-        setUser(data);
-      }
-    } catch {
-      // Not authenticated
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function login(email, password) {
-    const data = await loginApi(email, password);
-    setUser({
+  async function login(type, credential, password) {
+    const { loginApi } = await import("../api/auth");
+    const data = await loginApi(type, credential, password);
+    const userData = {
       authenticated: true,
       user_id: data.user_id,
       email: data.email,
       full_name: data.full_name,
-    });
-    return data;
-  }
-
-  async function register(fullName, email, phone, college, password) {
-    const data = await registerApi(fullName, email, phone, college, password);
-    if (data.user_id) {
-      setUser({
-        authenticated: true,
-        user_id: data.user_id,
-        email: data.email,
-        full_name: data.full_name,
-      });
-    }
+      registration_type: data.registration_type,
+      team_name: data.team_name,
+    };
+    localStorage.setItem("auth_token", data.access_token);
+    saveUser(userData);
+    setUserState(userData);
     return data;
   }
 
   async function logout() {
     try {
+      const { logoutApi } = await import("../api/auth");
       await logoutApi();
     } catch {
       // ignore
@@ -78,7 +56,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -22,6 +22,9 @@ import AdminTeams from "./pages/admin/AdminTeams";
 import AdminSubmissions from "./pages/admin/AdminSubmissions";
 import AdminAnnouncements from "./pages/admin/AdminAnnouncements";
 import AdminLeaderboard from "./pages/admin/AdminLeaderboard";
+import AdminPaymentSettings from "./pages/admin/AdminPaymentSettings";
+import AdminPlatformSettings from "./pages/admin/AdminPlatformSettings";
+import AdminDomains from "./pages/admin/AdminDomains";
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -89,6 +92,9 @@ export default function App() {
               <Route path="submissions" element={<AdminSubmissions />} />
               <Route path="announcements" element={<AdminAnnouncements />} />
               <Route path="leaderboard" element={<AdminLeaderboard />} />
+              <Route path="payment-settings" element={<AdminPaymentSettings />} />
+              <Route path="settings" element={<AdminPlatformSettings />} />
+              <Route path="domains" element={<AdminDomains />} />
             </Route>
           </Routes>
         </AdminAuthProvider>
