@@ -7,7 +7,7 @@ import qrCode from "../assets/qr_code.jpeg";
 const faqs = [
   {
     q: "How does Module 1 online task system work?",
-    a: "Once you register and log in, you will access 'My Tasks' in your dashboard. For 20 days, we assign daily targets consisting of 6 specific subtasks. Submitting these on time builds your points. The top 3 performers on the leaderboard secure immediate, free advancement to Module 2.",
+    a: "Once you register and log in, you will access 'My Tasks' in your dashboard. For 10 days, we assign daily targets consisting of 6 specific subtasks. Submitting these on time builds your points. The top 3 performers on the leaderboard secure immediate, free advancement to Module 2.",
   },
   {
     q: "Do I need a team to register for Module 1?",
@@ -88,7 +88,7 @@ export default function HomePage() {
 
               <div className="flex sm:hidden items-center justify-center space-x-8 pt-4 border-t border-white/[0.06] mt-6">
                 <div className="text-center">
-                  <div className="font-display text-3xl text-[#f0efec] leading-none">20+</div>
+                  <div className="font-display text-3xl text-[#f0efec] leading-none">10+</div>
                   <div className="text-[9px] text-[#555] tracking-[0.15em] uppercase mt-1 font-semibold">Days of Tasks</div>
                 </div>
                 <div className="text-center">
@@ -117,7 +117,7 @@ export default function HomePage() {
                     </div>
                     <div className="p-5 flex-1 space-y-2 select-none overflow-hidden">
                       <div className="text-[#444]">// Initialize Virtual Hackathon 2K26</div>
-                      <div><span className="text-brand-blue font-semibold">import</span> {"{"} hackathon {"}"} <span className="text-brand-blue font-semibold">from</span> <span className="text-[#999]">'deep-platform'</span>;</div>
+                      <div><span className="text-brand-blue font-semibold">import</span> {"{"} hackathon {"}"} <span className="text-brand-blue font-semibold">from</span> <span className="text-[#999]">'vashik-platform'</span>;</div>
                       <div className="pt-2"><span className="text-[#aaa] font-semibold">const</span> event = hackathon.create({"{"}</div>
                       <div className="pl-4">year: <span className="text-[#aaa]">2026</span>,</div>
                       <div className="pl-4">phases: [<span className="text-[#999]">'OnlineTasks'</span>, <span className="text-[#999]">'42hSprint'</span>, <span className="text-[#999]">'GrandFinals'</span>],</div>
@@ -151,7 +151,7 @@ export default function HomePage() {
 
         <div className="hidden sm:flex absolute bottom-10 left-4 sm:left-8 lg:left-12 space-x-12 lg:space-x-16">
           <div>
-            <div className="font-display text-4xl sm:text-5xl text-[#f0efec] leading-none">20+</div>
+            <div className="font-display text-4xl sm:text-5xl text-[#f0efec] leading-none">10+</div>
             <div className="text-[10px] sm:text-xs text-[#555] tracking-[0.15em] uppercase mt-1 font-semibold">Days of Tasks</div>
           </div>
           <div>
@@ -204,10 +204,9 @@ export default function HomePage() {
                     </div>
                     <p className="text-[#666] text-sm leading-relaxed mb-6">Begin your coding journey with small, curated coding tasks delivered daily. Learn consistent habits, test algorithmic skills, and unlock the basics.</p>
                     <div className="grid grid-cols-2 gap-4 text-left border-t border-white/[0.06] pt-5">
-                      <div><span className="text-[10px] text-[#555] font-semibold uppercase tracking-wider">Fee</span><p className="text-base font-bold text-brand-blue">₹9 Only</p></div>
-                      <div><span className="text-[10px] text-[#555] font-semibold uppercase tracking-wider">Timeline</span><p className="text-base font-bold text-[#f0efec]">20 Days</p></div>
-                      <div><span className="text-[10px] text-[#555] font-semibold uppercase tracking-wider">Daily Target</span><p className="text-base font-bold text-[#f0efec]">20 Tasks (6 subtasks/day)</p></div>
-                      <div><span className="text-[10px] text-[#555] font-semibold uppercase tracking-wider">Advancement</span><p className="text-base font-bold text-brand-blue">Top 3 Free entry to Mod 2</p></div>
+                      <div><span className="text-[10px] text-[#555] font-semibold uppercase tracking-wider">Fee</span><p className="text-base font-bold text-[#aaa]">₹149 / Member</p></div>
+                      <div><span className="text-[10px] text-[#555] font-semibold uppercase tracking-wider">Timeline</span><p className="text-base font-bold text-[#f0efec]">10 Days</p></div>
+                      <div><span className="text-[10px] text-[#555] font-semibold uppercase tracking-wider">Daily Target</span><p className="text-base font-bold text-[#f0efec]">10 Tasks (6 subtasks/day)</p></div>
                     </div>
                   </div>
                 </div>
@@ -229,7 +228,6 @@ export default function HomePage() {
                     </div>
                     <p className="text-[#666] text-sm leading-relaxed mb-6">Form your squad and enter a highly-focused 42-hour online hackathon. Solve major problem statements, build standard prototypes, and pitch.</p>
                     <div className="grid grid-cols-2 gap-4 text-left border-t border-white/[0.06] pt-5">
-                      <div><span className="text-[10px] text-[#555] font-semibold uppercase tracking-wider">Fee</span><p className="text-base font-bold text-[#aaa]">₹149 / Member</p></div>
                       <div><span className="text-[10px] text-[#555] font-semibold uppercase tracking-wider">Duration</span><p className="text-base font-bold text-[#f0efec]">42 Hours (2 days)</p></div>
                       <div><span className="text-[10px] text-[#555] font-semibold uppercase tracking-wider">Team Size</span><p className="text-base font-bold text-[#f0efec]">1 - 4 Members</p></div>
                       <div><span className="text-[10px] text-[#555] font-semibold uppercase tracking-wider">Advancement</span><p className="text-base font-bold text-brand-blue">Top 5 Teams advance</p></div>
