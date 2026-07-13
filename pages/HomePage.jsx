@@ -7,7 +7,7 @@ import qrCode from "../assets/qr_code.jpeg";
 const faqs = [
   {
     q: "How does Module 1 online task system work?",
-    a: "Once you register and log in, you will access 'My Tasks' in your dashboard. For 20 days, we assign daily targets consisting of 6 specific subtasks. Submitting these on time builds your points. The top 3 performers on the leaderboard secure immediate, free advancement to Module 2.",
+    a: "Once you register and log in, you will access 'My Tasks' in your dashboard. For 10 days, we assign daily targets consisting of 6 specific subtasks. Submitting these on time builds your points. The top 3 performers on the leaderboard secure immediate, free advancement to Module 2.",
   },
   {
     q: "Do I need a team to register for Module 1?",
