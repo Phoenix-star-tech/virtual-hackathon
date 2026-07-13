@@ -88,7 +88,7 @@ export default function HomePage() {
 
               <div className="flex sm:hidden items-center justify-center space-x-8 pt-4 border-t border-white/[0.06] mt-6">
                 <div className="text-center">
-                  <div className="font-display text-3xl text-[#f0efec] leading-none">20+</div>
+                  <div className="font-display text-3xl text-[#f0efec] leading-none">10+</div>
                   <div className="text-[9px] text-[#555] tracking-[0.15em] uppercase mt-1 font-semibold">Days of Tasks</div>
                 </div>
                 <div className="text-center">
