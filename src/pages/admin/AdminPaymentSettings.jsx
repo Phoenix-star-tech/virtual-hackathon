@@ -43,7 +43,7 @@ export default function AdminPaymentSettings() {
   async function fetchConfig() {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/admin/payment-settings`, {
+      const res = await fetch(`${API_BASE}/api/admin/payment-settings/`, {
         headers: { ...authHeaders() },
       });
       if (!res.ok) throw new Error("Failed to fetch");
@@ -102,7 +102,7 @@ export default function AdminPaymentSettings() {
         return;
       }
 
-      const res = await fetch(`${API_BASE}/api/admin/payment-settings`, {
+      const res = await fetch(`${API_BASE}/api/admin/payment-settings/`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", ...authHeaders() },
         body: JSON.stringify(body),

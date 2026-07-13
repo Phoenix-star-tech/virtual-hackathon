@@ -36,7 +36,7 @@ export default function AdminDomains() {
   async function fetchDomains() {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/admin/domains`, {
+      const res = await fetch(`${API_BASE}/api/admin/domains/`, {
         headers: { ...authHeaders() },
       });
       if (!res.ok) throw new Error("Failed to fetch");
@@ -54,7 +54,7 @@ export default function AdminDomains() {
     if (!name) return;
     setAdding(true);
     try {
-      const res = await fetch(`${API_BASE}/api/admin/domains`, {
+      const res = await fetch(`${API_BASE}/api/admin/domains/`, {
         method: "POST",
         headers: { "Content-Type": "application/json", ...authHeaders() },
         body: JSON.stringify({ name }),

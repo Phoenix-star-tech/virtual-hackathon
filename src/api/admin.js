@@ -109,7 +109,7 @@ export async function getAdminStats() {
 
 export async function getUsers(params = {}) {
   const q = new URLSearchParams(params).toString();
-  return adminGet(`/api/admin/users?${q}`);
+  return adminGet(`/api/admin/users/?${q}`);
 }
 
 export async function getUser(id) {
@@ -129,7 +129,7 @@ export async function toggleBanUser(id) {
 }
 
 export async function getModules() {
-  return adminGet("/api/admin/modules");
+  return adminGet("/api/admin/modules/");
 }
 
 export async function getModule(id) {
@@ -137,7 +137,7 @@ export async function getModule(id) {
 }
 
 export async function createModule(data) {
-  return adminPost("/api/admin/modules", data);
+  return adminPost("/api/admin/modules/", data);
 }
 
 export async function updateModule(id, data) {
@@ -161,7 +161,7 @@ export async function getTask(id) {
 }
 
 export async function createTask(data) {
-  return adminPost("/api/admin/tasks", data);
+  return adminPost("/api/admin/tasks/", data);
 }
 
 export async function updateTask(id, data) {
@@ -181,7 +181,7 @@ export async function toggleTaskActive(id) {
 }
 
 export async function getTeams() {
-  return adminGet("/api/admin/teams");
+  return adminGet("/api/admin/teams/");
 }
 
 export async function getTeam(id) {
@@ -189,7 +189,7 @@ export async function getTeam(id) {
 }
 
 export async function createTeam(data) {
-  return adminPost("/api/admin/teams", data);
+  return adminPost("/api/admin/teams/", data);
 }
 
 export async function updateTeam(id, data) {
@@ -210,7 +210,7 @@ export async function removeTeamMember(teamId, userId) {
 
 export async function getSubmissions(params = {}) {
   const q = new URLSearchParams(params).toString();
-  return adminGet(`/api/admin/submissions?${q}`);
+  return adminGet(`/api/admin/submissions/?${q}`);
 }
 
 export async function reviewSubmission(id, data) {
@@ -218,11 +218,11 @@ export async function reviewSubmission(id, data) {
 }
 
 export async function getAnnouncements() {
-  return adminGet("/api/admin/announcements");
+  return adminGet("/api/admin/announcements/");
 }
 
 export async function createAnnouncement(data) {
-  return adminPost("/api/admin/announcements", data);
+  return adminPost("/api/admin/announcements/", data);
 }
 
 export async function deleteAnnouncement(id) {
@@ -231,7 +231,7 @@ export async function deleteAnnouncement(id) {
 
 export async function getLeaderboard(moduleId) {
   const q = moduleId ? `?module_id=${moduleId}` : "";
-  return adminGet(`/api/admin/leaderboard${q}`);
+  return adminGet(`/api/admin/leaderboard/${q}`);
 }
 
 export async function updateLeaderboardEntry(id, data) {
@@ -247,11 +247,11 @@ export async function recalculateLeaderboard(moduleId) {
 }
 
 export async function getAdmins() {
-  return adminGet("/api/admin/admins");
+  return adminGet("/api/admin/admins/");
 }
 
 export async function createAdmin(data) {
-  return adminPost("/api/admin/admins", data);
+  return adminPost("/api/admin/admins/", data);
 }
 
 export async function updateAdmin(id, data) {
@@ -259,19 +259,19 @@ export async function updateAdmin(id, data) {
 }
 
 export async function getPaymentSettings() {
-  return adminGet("/api/admin/payment-settings");
+  return adminGet("/api/admin/payment-settings/");
 }
 
 export async function updatePaymentSettings(data) {
-  return adminPut("/api/admin/payment-settings", data);
+  return adminPut("/api/admin/payment-settings/", data);
 }
 
 export async function getPlatformSettings() {
-  return adminGet("/api/admin/platform-settings");
+  return adminGet("/api/admin/platform-settings/");
 }
 
 export async function updatePlatformSettings(data) {
-  return adminPut("/api/admin/platform-settings", data);
+  return adminPut("/api/admin/platform-settings/", data);
 }
 
 export async function uploadTaskImage(file) {
