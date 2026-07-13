@@ -36,8 +36,8 @@ export default function RegisterPage() {
 
   useEffect(() => {
     Promise.all([
-      getQrConfigApi().then((c) => { setQrConfig(c); setSoloBaseAmount(c?.amount || 9); }).catch(() => {}),
-      getDomainsApi().then(setDomains).catch(() => {}),
+      getQrConfigApi().then((c) => { setQrConfig(c); setSoloBaseAmount(c?.amount || 9); }).catch((err) => console.error("Failed to fetch QR config:", err)),
+      getDomainsApi().then(setDomains).catch((err) => console.error("Failed to fetch domains:", err)),
     ]).finally(() => setQrLoading(false));
   }, []);
 
