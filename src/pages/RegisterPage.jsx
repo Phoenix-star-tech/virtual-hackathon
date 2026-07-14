@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { registerSoloApi, registerTeamApi } from "../api/auth";
+import { registerSoloApi, registerTeamApi, checkEmailApi, checkTeamNameApi } from "../api/auth";
 import { getQrConfigApi, checkTransactionApi } from "../api/payment";
 import { getDomainsApi } from "../api/domains";
 import Footer from "../components/Footer";
 import logo from "../assets/logo.png";
 
 const TID_CHECK_DEBOUNCE_MS = 500;
+const EMAIL_CHECK_DEBOUNCE_MS = 800;
+const TEAM_NAME_CHECK_DEBOUNCE_MS = 800;
 const MAX_TEAM_MEMBERS = 4;
 
 export default function RegisterPage() {
@@ -30,18 +32,38 @@ export default function RegisterPage() {
   const [qrConfig, setQrConfig] = useState(null);
   const [qrLoading, setQrLoading] = useState(true);
   const [tidStatus, setTidStatus] = useState(null);
+  const [emailStatus, setEmailStatus] = useState(null);
+  const [teamNameStatus, setTeamNameStatus] = useState(null);
   const [domains, setDomains] = useState([]);
   const [soloBaseAmount, setSoloBaseAmount] = useState(9);
   const tidDebounceRef = useRef(null);
-
-  useEffect(() => {
-    Promise.all([
-      getQrConfigApi().then((c) => { setQrConfig(c); setSoloBaseAmount(c?.amount || 9); }).catch((err) => console.error("Failed to fetch QR config:", err)),
-      getDomainsApi().then(setDomains).catch((err) => console.error("Failed to fetch domains:", err)),
-    ]).finally(() => setQrLoading(false));
-  }, []);
+  const emailDebounceRef = useRef(null);
+  const teamNameDebounceRef = useRef(null);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  useEffect(() => {
+    const controller = new AbortController();
+    let cancelled = false;
+
+    const timeout = setTimeout(() => {
+      if (!cancelled) setQrLoading(false);
+    }, 8000);
+
+    Promise.all([
+      getQrConfigApi().then((c) => {
+        if (!cancelled) { setQrConfig(c); setSoloBaseAmount(c?.amount || 9); }
+      }).catch((err) => console.error("Failed to fetch QR config:", err)),
+      getDomainsApi().then((d) => {
+        if (!cancelled) setDomains(d);
+      }).catch((err) => console.error("Failed to fetch domains:", err)),
+    ]).finally(() => {
+      clearTimeout(timeout);
+      if (!cancelled) setQrLoading(false);
+    });
+
+    return () => { cancelled = true; clearTimeout(timeout); controller.abort(); };
+  }, []);
 
   const teamAmount = soloBaseAmount * (1 + teamMembers.length);
   const displayAmount = type === "team" ? teamAmount : soloBaseAmount;
@@ -123,6 +145,40 @@ export default function RegisterPage() {
         }, TID_CHECK_DEBOUNCE_MS);
       }
     }
+    if (field === "email") {
+      setEmailStatus(null);
+      if (emailDebounceRef.current) clearTimeout(emailDebounceRef.current);
+      const trimmed = value.trim();
+      if (trimmed.length > 0 && emailRegex.test(trimmed)) {
+        emailDebounceRef.current = setTimeout(async () => {
+          setEmailStatus("checking");
+          try {
+            const data = await checkEmailApi(trimmed);
+            setEmailStatus(data.available ? "available" : "taken");
+            setErrors((p) => ({ ...p, email: data.available ? "" : "This email is already registered" }));
+          } catch {
+            setEmailStatus(null);
+          }
+        }, EMAIL_CHECK_DEBOUNCE_MS);
+      }
+    }
+    if (field === "teamName") {
+      setTeamNameStatus(null);
+      if (teamNameDebounceRef.current) clearTimeout(teamNameDebounceRef.current);
+      const trimmed = value.trim();
+      if (trimmed.length > 0) {
+        teamNameDebounceRef.current = setTimeout(async () => {
+          setTeamNameStatus("checking");
+          try {
+            const data = await checkTeamNameApi(trimmed);
+            setTeamNameStatus(data.available ? "available" : "taken");
+            setErrors((p) => ({ ...p, teamName: data.available ? "" : "This team name is already taken" }));
+          } catch {
+            setTeamNameStatus(null);
+          }
+        }, TEAM_NAME_CHECK_DEBOUNCE_MS);
+      }
+    }
   }, [form, tidStatus, teamMembers, validateField]);
 
   const handleMemberChange = (index, field, value) => {
@@ -177,8 +233,10 @@ export default function RegisterPage() {
       form.domain,
     ];
     if (!requiredChecks.every(Boolean)) return false;
+    if (emailStatus === "taken") return false;
     if (type === "team") {
       if (!form.teamName.trim()) return false;
+      if (teamNameStatus === "taken") return false;
     }
     return true;
   };
@@ -364,7 +422,24 @@ export default function RegisterPage() {
                   </div>
                   <input type="text" value={form.teamName} onChange={set("teamName")} className={inputClass("teamName", errors.teamName)} placeholder="Enter your team name" />
                 </div>
-                {errors.teamName && <p className="text-xs text-rose-500 font-semibold">{errors.teamName}</p>}
+                <div className="flex items-center space-x-2 mt-1">
+                  {teamNameStatus === "checking" && (
+                    <div className="w-4 h-4 rounded-full border-2 border-brand-purple border-t-transparent animate-spin"></div>
+                  )}
+                  {teamNameStatus === "available" && (
+                    <p className="text-xs text-emerald-500 font-semibold flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
+                      Team name available
+                    </p>
+                  )}
+                  {teamNameStatus === "taken" && (
+                    <p className="text-xs text-rose-500 font-semibold flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1"><circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" /></svg>
+                      Team name taken
+                    </p>
+                  )}
+                  {errors.teamName && <span className="text-xs text-rose-500 font-semibold">{errors.teamName}</span>}
+                </div>
               </div>
             )}
 
@@ -373,7 +448,24 @@ export default function RegisterPage() {
                 <input type="text" value={form.fullName} onChange={set("fullName")} className={inputClass("fullName", errors.fullName)} placeholder="Full name" />
               </Field>
               <Field label={type === "team" ? "Leader Gmail" : "Gmail"} icon="mail" error={errors.email}>
-                <input type="email" value={form.email} onChange={set("email")} className={inputClass("email", errors.email)} placeholder="name@gmail.com" />
+                <div className="relative">
+                  <input type="email" value={form.email} onChange={set("email")} className={inputClass("email", errors.email || (emailStatus && emailStatus !== "available" ? "border-rose-400" : ""))} placeholder="name@gmail.com" />
+                  {emailStatus === "checking" && (
+                    <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center">
+                      <div className="w-4 h-4 rounded-full border-2 border-brand-purple border-t-transparent animate-spin"></div>
+                    </div>
+                  )}
+                  {emailStatus === "available" && (
+                    <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-500"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
+                    </div>
+                  )}
+                  {emailStatus === "taken" && (
+                    <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-rose-500"><circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" /></svg>
+                    </div>
+                  )}
+                </div>
               </Field>
               <Field label={type === "team" ? "Leader Phone" : "Phone Number"} icon="phone" error={errors.phone}>
                 <input type="tel" value={form.phone} onChange={set("phone")} className={inputClass("phone", errors.phone)} placeholder="+91 9876543210" />

@@ -8,6 +8,14 @@ export async function registerTeamApi(data) {
   return apiPost("/api/auth/register/team", data);
 }
 
+export async function checkEmailApi(email) {
+  return apiGet(`/api/auth/check-email?email=${encodeURIComponent(email)}`);
+}
+
+export async function checkTeamNameApi(teamName) {
+  return apiGet(`/api/auth/check-team-name?team_name=${encodeURIComponent(teamName)}`);
+}
+
 export async function loginApi(type, credential, password) {
   const body = { type, password };
   if (type === "solo") {

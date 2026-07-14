@@ -436,6 +436,12 @@ export default function DashboardPage() {
                           <div className="flex-1 min-w-0">
                             <h4 className="text-sm font-bold text-white">{t.title}</h4>
                             <p className="text-xs text-gray-500 mt-0.5">{t.description || "No description"}</p>
+                            {t.link && (
+                              <a href={t.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 mt-2 text-xs text-blue-400 hover:text-blue-300 hover:underline transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                View Resource
+                              </a>
+                            )}
                             {t.attachments?.length > 0 && (
                               <div className="flex flex-wrap gap-2 mt-2">
                                 {t.attachments.map((url, i) => (

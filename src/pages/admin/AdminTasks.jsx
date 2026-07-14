@@ -10,7 +10,7 @@ export default function AdminTasks() {
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState(null);
   const [imageUploading, setImageUploading] = useState(false);
-  const [form, setForm] = useState({ module_id: "", title: "", description: "", answer_type: "link", quiz_options: ["", "", "", ""], points: 10, order_index: 0, attachments: [] });
+  const [form, setForm] = useState({ module_id: "", title: "", description: "", link: "", answer_type: "link", quiz_options: ["", "", "", ""], points: 10, order_index: 0, attachments: [] });
   const { admin } = useAdminAuth();
   const isSuper = admin?.role === "super_admin";
 
@@ -34,7 +34,7 @@ export default function AdminTasks() {
   useEffect(() => { fetchTasks(); }, [selectedModule]);
 
   function resetForm() {
-    setForm({ module_id: selectedModule, title: "", description: "", answer_type: "link", quiz_options: ["", "", "", ""], points: 10, order_index: 0, attachments: [] });
+    setForm({ module_id: selectedModule, title: "", description: "", link: "", answer_type: "link", quiz_options: ["", "", "", ""], points: 10, order_index: 0, attachments: [] });
     setEditing(null);
     setShowForm(false);
   }
@@ -46,6 +46,7 @@ export default function AdminTasks() {
         module_id: form.module_id,
         title: form.title,
         description: form.description,
+        link: form.link,
         answer_type: form.answer_type,
         quiz_options: form.answer_type === "quiz" ? form.quiz_options : [],
         attachments: form.attachments,
@@ -70,6 +71,7 @@ export default function AdminTasks() {
       module_id: t.module_id,
       title: t.title || "",
       description: t.description || "",
+      link: t.link || "",
       answer_type: t.answer_type || "link",
       quiz_options: t.quiz_options?.length === 4 ? t.quiz_options : ["", "", "", ""],
       attachments: t.attachments || [],
@@ -163,6 +165,11 @@ export default function AdminTasks() {
           <div>
             <label className="block text-gray-300 text-sm mb-1">Description</label>
             <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows="3" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-red-500 text-sm" />
+          </div>
+
+          <div>
+            <label className="block text-gray-300 text-sm mb-1">Link <span className="text-gray-500">(optional)</span></label>
+            <input value={form.link} onChange={(e) => setForm({ ...form, link: e.target.value })} placeholder="https://example.com/resource" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-red-500 text-sm" />
           </div>
 
           <div>
