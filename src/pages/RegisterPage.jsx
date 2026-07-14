@@ -221,7 +221,7 @@ export default function RegisterPage() {
   };
 
   const isFormValid = () => {
-    if (tidStatus !== "valid") return false;
+    if (tidStatus === "invalid") return false;
     const requiredChecks = [
       form.fullName.trim(),
       form.email.trim() && emailRegex.test(form.email.trim()),
@@ -237,6 +237,7 @@ export default function RegisterPage() {
     if (type === "team") {
       if (!form.teamName.trim()) return false;
       if (teamNameStatus === "taken") return false;
+      if (teamMembers.length < 1) return false;
     }
     return true;
   };
@@ -256,11 +257,15 @@ export default function RegisterPage() {
     setError("");
     setSuccess("");
     if (!validate()) return;
-    if (tidStatus !== "valid") {
-      setError("Please ensure your Transaction ID is valid and not already used");
+    if (tidStatus === "invalid") {
+      setError("This Transaction ID has already been used. Please use a different one.");
       return;
     }
     if (type === "team") {
+      if (teamMembers.length < 1) {
+        setError("Please add at least 1 team member (minimum 2 total including leader)");
+        return;
+      }
       for (let i = 0; i < teamMembers.length; i++) {
         const merrs = validateMember(teamMembers[i], i);
         if (Object.keys(merrs).length > 0) {
