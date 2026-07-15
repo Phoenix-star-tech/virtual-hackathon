@@ -680,7 +680,7 @@ export default function RegisterPage() {
   );
 }
 
-function Field({ label, icon, error, children }) {
+function Field({ label, icon, error, children, required = true }) {
   const svgIcons = {
     user: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
     mail: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>,
@@ -690,7 +690,7 @@ function Field({ label, icon, error, children }) {
 
   return (
     <div className="space-y-1.5">
-      <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">{label}</label>
+      <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">{label}{required && <span className="text-rose-500"> *</span>}</label>
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
           {svgIcons[icon]}
